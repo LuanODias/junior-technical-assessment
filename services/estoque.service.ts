@@ -5,6 +5,8 @@ export const getAllEstoques = async (): Promise<estoque[]> => {
   return repository.findAll();
 };
 
-export const getEstoqueById = async (id: bigint): Promise<estoque | null> => {
+export const getEstoqueByProductId = async (
+  id: bigint,
+): Promise<estoque | null> => {
   return repository.findById(id);
 };
