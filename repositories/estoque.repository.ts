@@ -2,13 +2,22 @@ import prisma from "@/lib/db";
 import { estoque } from "@/generated/prisma/client";
 
 export const findAll = async (): Promise<estoque[]> => {
-  return prisma.estoque.findMany();
+  return prisma.estoque.findMany({
+    include: {
+      produto: true,
+    },
+  });
 };
 
-export const findById = async (id: bigint): Promise<estoque | null> => {
+export const findByProductId = async (
+  ProductId: bigint,
+): Promise<estoque | null> => {
   return prisma.estoque.findUnique({
     where: {
-      id,
+      produto_id: ProductId,
+    },
+    include: {
+      produto: true,
     },
   });
 };
