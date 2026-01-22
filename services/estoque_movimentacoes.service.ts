@@ -23,30 +23,21 @@ export const createEstoqueMovimentacao = async (
     throw new Error("A quantidade da movimentação deve ser positiva.");
   }
 
-  const estoqueAtual = await estoqueRepository.findById(produto_id);
+  if (tipo === "saida") {
+    const estoqueAtual = await estoqueRepository.findByProductId(produto_id);
 
-  if (!estoqueAtual) {
-    throw new Error("Estoque não encontrado para este produto.");
-  }
+    const saldoAtual = estoqueAtual?.quantidade || 0;
 
-  let novoSaldo = Number(estoqueAtual.quantidade);
-
-  if (tipo === "ENTRADA") {
-    novoSaldo += quantidade;
-  } else if (tipo === "SAIDA") {
-    if (novoSaldo < quantidade) {
-      throw new Error("Saldo insuficiente para realizar essa saída.");
+    if (saldoAtual < quantidade) {
+      throw new Error(
+        `Saldo insuficiente. Disponível: ${saldoAtual}, Solicitado: ${quantidade}`,
+      );
     }
-    novoSaldo -= quantidade;
   }
 
-  const newEstoqueMovimentacao = await repository.create({
+  return repository.create({
     produto_id,
     quantidade,
     tipo,
   });
-
-  await estoqueRepository.update(produto_id, { quantidade: novoSaldo });
-
-  return newEstoqueMovimentacao;
 };
