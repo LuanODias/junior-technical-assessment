@@ -8,5 +8,5 @@ export const getAllEstoques = async (): Promise<estoque[]> => {
 export const getEstoqueByProductId = async (
   id: bigint,
 ): Promise<estoque | null> => {
-  return repository.findById(id);
+  return repository.findByProductId(id);
 };
