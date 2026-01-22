@@ -60,7 +60,7 @@ export function EditProductModal({
     },
   ];
 
-  const handleSubmit = (data: z.infer<typeof updateProdutoSchema>) => {
+  const handleSubmit = (data: Omit<z.infer<typeof updateProdutoSchema>, "id">) => {
     if (!product?.id) return;
     updateProdutoMutation.mutate(
       { ...data, id: product.id },
@@ -85,7 +85,7 @@ export function EditProductModal({
     >
       {product && (
         <DynamicForm
-          schema={updateProdutoSchema}
+          schema={updateProdutoSchema.omit({ id: true })}
           onSubmit={handleSubmit}
           defaultValues={{
             nome: product.nome,
