@@ -2,7 +2,20 @@ import { NextResponse } from 'next/server';
 import * as service from '@/services/produtos.service';
 
 export async function GET() {
-  return NextResponse.json({ error: 'erro desconhecido' }, { status: 500 });
+ try {
+    const produtos = await service.getAllProdutos();
+  const produtosSerialized = produtos.map(produto => {
+    return JSON.parse(
+      JSON.stringify(produto, (key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+      )
+    );
+  });
+  return NextResponse.json(produtosSerialized);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Falha ao buscar produtos' }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -32,3 +45,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Falha ao criar produto' }, { status: 500 });
   }
 }
+
