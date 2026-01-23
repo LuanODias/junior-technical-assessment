@@ -26,6 +26,7 @@ export const estoqueMovimentacaoColumns: ColumnDef<EstoqueMovimentacao>[] = [
   {
     accessorKey: "tipo",
     header: "Tipo",
+    filterFn: "arrIncludesSome",
     cell: ({ row }) => {
       const tipo = row.getValue("tipo") as string;
       return tipo === "entrada" ? "ENTRADA (+)" : "SAÍDA (-)";

@@ -19,7 +19,9 @@ export const produtoColumns: ColumnDef<Produto>[] = [
   },
   {
     accessorKey: "categorias.nome",
+    id: "categoria",
     header: "Categoria",
+    filterFn: "arrIncludesSome",
     cell: ({ row }) => {
       const category = row.original.categorias;
       return category ? category.nome : "N/A";
@@ -32,6 +34,7 @@ export const produtoColumns: ColumnDef<Produto>[] = [
   {
     accessorKey: "marca",
     header: "Marca",
+    filterFn: "arrIncludesSome",
   },
   {
     accessorKey: "criado_em",
