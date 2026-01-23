@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CategoriasView } from "@/components/views/categorias-view";
+import { EstoqueView } from "@/components/views/estoque-view";
 import { ProdutosView } from "@/components/views/produtos-view";
 
 export default function Home() {
@@ -12,15 +13,19 @@ export default function Home() {
       </div>
 
       <Tabs defaultValue="categorias" className="w-full max-w-5xl">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="categorias">Categorias</TabsTrigger>
           <TabsTrigger value="produtos">Produtos</TabsTrigger>
+          <TabsTrigger value="estoque">Estoque</TabsTrigger>
         </TabsList>
         <TabsContent value="categorias">
           <CategoriasView />
         </TabsContent>
         <TabsContent value="produtos">
           <ProdutosView />
+        </TabsContent>
+        <TabsContent value="estoque">
+          <EstoqueView />
         </TabsContent>
       </Tabs>
     </main>

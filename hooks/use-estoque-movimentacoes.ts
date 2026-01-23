@@ -28,7 +28,7 @@ export type CreateMovimentacaoPayload = z.infer<
 >;
 
 const fetchStockMovements = async (): Promise<EstoqueMovimentacao[]> => {
-  const response = await fetch("/api/movimentacoes");
+  const response = await fetch("/api/estoque_movimentacoes");
   if (!response.ok) {
     throw new Error("Failed to fetch stock movements");
   }
@@ -38,7 +38,7 @@ const fetchStockMovements = async (): Promise<EstoqueMovimentacao[]> => {
 const createStockMovement = async (
   payload: CreateMovimentacaoPayload,
 ): Promise<EstoqueMovimentacao> => {
-  const response = await fetch("/api/movimentacoes", {
+  const response = await fetch("/api/estoque_movimentacoes", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

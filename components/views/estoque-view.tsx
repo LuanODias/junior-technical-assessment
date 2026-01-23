@@ -1,0 +1,47 @@
+"use client";
+
+import { useState } from "react";
+import { useStock } from "@/hooks/use-estoque";
+import { DataTable } from "@/components/custom/data-table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { estoqueColumns } from "../estoque/estoque-columns";
+import { AddMovimentacaoModal } from "../estoque/movimentacao-add-modal";
+import { useStockMovements } from "@/hooks/use-estoque-movimentacoes";
+
+export function EstoqueView() {
+  const { data: estoqueItens, isLoading, isError, error } = useStock();
+  const { data: estoqueMovimentacoes } = useStockMovements();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  if (isError) {
+    return (
+      <div className="text-red-500">
+        Error: {error?.message || "Failed to load stock data."}
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <DataTable
+        columns={estoqueColumns}
+        data={estoqueItens || []}
+        isLoading={isLoading}
+        searchComponent={
+          <Input placeholder="Buscar produtos..." className="max-w-sm" />
+        }
+        actionButtons={[
+          <Button key="new-movement" onClick={() => setIsAddModalOpen(true)}>
+            Nova Movimentação
+          </Button>,
+        ]}
+      />
+
+      <AddMovimentacaoModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
+    </>
+  );
+}
