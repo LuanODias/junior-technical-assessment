@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +35,15 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   filterComponent?: React.ReactNode;
   searchComponent?: React.ReactNode;
   actionButtons?: React.ReactNode[];
+  facetedFilters?: {
+    columnName: string;
+    title: string;
+    options: {
+      label: string;
+      value: string;
+      icon?: React.ComponentType<{ className?: string }>;
+    }[];
+  }[];
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
@@ -45,6 +55,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   filterComponent,
   searchComponent,
   actionButtons,
+  facetedFilters,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -88,6 +99,19 @@ export function DataTable<TData extends { id: string }, TValue>({
             })
           : null}
         {filterComponent}
+        {facetedFilters?.map((filter) => {
+          const column = table.getColumn(filter.columnName);
+          return (
+            column && (
+              <DataTableFacetedFilter
+                key={filter.columnName}
+                column={column}
+                title={filter.title}
+                options={filter.options}
+              />
+            )
+          );
+        })}
         <div className="ml-auto flex gap-2">
           {actionButtons?.map((button, index) => (
             <React.Fragment key={index}>{button}</React.Fragment>
