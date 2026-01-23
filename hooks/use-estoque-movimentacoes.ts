@@ -27,7 +27,7 @@ export type CreateMovimentacaoPayload = z.infer<
   typeof createMovimentacaoSchema
 >;
 
-const fetchMovimentacoes = async (): Promise<EstoqueMovimentacao[]> => {
+const fetchStockMovements = async (): Promise<EstoqueMovimentacao[]> => {
   const response = await fetch("/api/movimentacoes");
   if (!response.ok) {
     throw new Error("Failed to fetch stock movements");
@@ -35,7 +35,7 @@ const fetchMovimentacoes = async (): Promise<EstoqueMovimentacao[]> => {
   return response.json();
 };
 
-const createMovimentacao = async (
+const createStockMovement = async (
   payload: CreateMovimentacaoPayload,
 ): Promise<EstoqueMovimentacao> => {
   const response = await fetch("/api/movimentacoes", {
@@ -55,17 +55,17 @@ const createMovimentacao = async (
   return response.json();
 };
 
-export const useEstoqueMovimentacoes = () => {
+export const useStockMovements = () => {
   return useQuery<EstoqueMovimentacao[], Error>({
     queryKey: ["estoque-movimentacoes"],
-    queryFn: fetchMovimentacoes,
+    queryFn: fetchStockMovements,
   });
 };
 
-export const useCreateMovimentacao = () => {
+export const useCreateStockMovement = () => {
   const queryClient = useQueryClient();
   return useMutation<EstoqueMovimentacao, Error, CreateMovimentacaoPayload>({
-    mutationFn: createMovimentacao,
+    mutationFn: createStockMovement,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["estoque-movimentacoes"] });
       queryClient.invalidateQueries({ queryKey: ["estoque"] });

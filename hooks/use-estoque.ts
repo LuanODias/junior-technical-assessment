@@ -17,7 +17,7 @@ export const estoqueItemSchema = z.object({
 
 export type EstoqueItem = z.infer<typeof estoqueItemSchema>;
 
-const fetchEstoque = async (): Promise<EstoqueItem[]> => {
+const fetchStock = async (): Promise<EstoqueItem[]> => {
   const response = await fetch("/api/estoque");
   if (!response.ok) {
     throw new Error("Failed to fetch stock items");
@@ -28,9 +28,9 @@ const fetchEstoque = async (): Promise<EstoqueItem[]> => {
   return data;
 };
 
-export const useEstoque = () => {
+export const useStock = () => {
   return useQuery<EstoqueItem[], Error>({
     queryKey: ["estoque"],
-    queryFn: fetchEstoque,
+    queryFn: fetchStock,
   });
 };
