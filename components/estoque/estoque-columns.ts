@@ -1,10 +1,28 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Column } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { EstoqueItem } from "@/hooks/use-estoque";
 import { createElement } from "react";
 import { CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+
+const createSortableHeader = <TData, TValue>(
+  column: Column<TData, TValue>,
+  title: string,
+) => {
+  return createElement(
+    Button,
+    {
+      variant: "ghost",
+      onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+      className: "-ml-4",
+    },
+    title,
+    createElement(ArrowUpDown, { className: "ml-2 h-4 w-4" }),
+  );
+};
 
 export const estoqueColumns: ColumnDef<EstoqueItem>[] = [
   {
@@ -13,25 +31,25 @@ export const estoqueColumns: ColumnDef<EstoqueItem>[] = [
   },
   {
     accessorKey: "produtos.nome",
-    header: "Produto",
+    header: ({ column }) => createSortableHeader(column, "Produto"),
     cell: ({ row }) => {
       return row.original.produtos?.nome || "Produto Desconhecido";
     },
   },
   {
     accessorKey: "produtos.sku",
-    header: "SKU",
+    header: ({ column }) => createSortableHeader(column, "SKU"),
     cell: ({ row }) => {
       return row.original.produtos?.sku || "-";
     },
   },
   {
     accessorKey: "quantidade",
-    header: "Quantidade",
+    header: ({ column }) => createSortableHeader(column, "Quantidade"),
   },
   {
     id: "status",
-    header: "Status",
+    header: ({ column }) => createSortableHeader(column, "Status"),
     accessorFn: (row) => {
       const qtd = row.quantidade;
       const min = row.produtos?.estoque_minimo || 0;
@@ -67,7 +85,7 @@ export const estoqueColumns: ColumnDef<EstoqueItem>[] = [
   },
   {
     accessorKey: "atualizado_em",
-    header: "Última Atualização",
+    header: ({ column }) => createSortableHeader(column, "Última Atualização"),
     cell: ({ row }) => {
       const dateValue = row.getValue("atualizado_em");
       if (!dateValue) return "-";
