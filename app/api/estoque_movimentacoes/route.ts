@@ -55,10 +55,13 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json(serialized, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Erro ao criar movimentação:", error);
 
-    if (error.message && error.message.includes("Saldo insuficiente")) {
+    if (
+      error instanceof Error &&
+      error.message.includes("Saldo insuficiente")
+    ) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 

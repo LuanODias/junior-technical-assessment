@@ -42,7 +42,7 @@ export const estoqueColumns: ColumnDef<EstoqueItem>[] = [
     },
     filterFn: "arrIncludesSome",
     cell: ({ row }) => {
-      const status = row.getValue("status") as String;
+      const status = row.getValue("status") as string;
 
       let Icon = CheckCircle;
       let colorClass = "text-green-600";

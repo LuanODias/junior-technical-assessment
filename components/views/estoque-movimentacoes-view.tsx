@@ -1,18 +1,10 @@
 "use client";
 
-import { useStockMovements } from "@/hooks/use-estoque-movimentacoes";
 import { DataTable } from "@/components/custom/data-table";
 import { Input } from "@/components/ui/input";
+import { useStockMovements } from "@/hooks/use-estoque-movimentacoes";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { estoqueMovimentacaoColumns } from "../estoque/estoque-movimentacao-columns";
-import { DataTableFacetedFilter } from "@/components/custom/data-table-faceted-filter";
-import {
-  getCoreRowModel,
-  useReactTable,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-} from "@tanstack/react-table";
-import { ArrowUp, ArrowDown } from "lucide-react";
 
 export function MovimentacoesView() {
   const {

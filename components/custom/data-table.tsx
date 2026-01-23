@@ -65,7 +65,7 @@ export function DataTable<TData extends { id: string }, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(), // Enable pagination
+    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
@@ -92,11 +92,17 @@ export function DataTable<TData extends { id: string }, TValue>({
     <div>
       <div className="flex items-center py-4 gap-2">
         {searchComponent && React.isValidElement(searchComponent)
-          ? React.cloneElement(searchComponent as React.ReactElement<any>, {
-              value: globalFilter ?? "",
-              onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
-                setGlobalFilter(event.target.value),
-            })
+          ? React.cloneElement(
+              searchComponent as React.ReactElement<{
+                value: string;
+                onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+              }>,
+              {
+                value: globalFilter ?? "",
+                onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+                  setGlobalFilter(event.target.value),
+              },
+            )
           : null}
         {filterComponent}
         {facetedFilters?.map((filter) => {
