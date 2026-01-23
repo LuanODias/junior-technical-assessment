@@ -11,6 +11,7 @@ export const estoqueItemSchema = z.object({
       id: z.string(),
       nome: z.string(),
       sku: z.string(),
+      estoque_minimo: z.number().nullable().optional(),
     })
     .optional(),
 });
