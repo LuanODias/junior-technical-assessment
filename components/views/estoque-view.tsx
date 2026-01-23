@@ -29,7 +29,10 @@ export function EstoqueView() {
         data={estoqueItens || []}
         isLoading={isLoading}
         searchComponent={
-          <Input placeholder="Buscar produtos..." className="max-w-sm" />
+          <Input
+            placeholder="Buscar estoque dos produtos..."
+            className="max-w-sm"
+          />
         }
         actionButtons={[
           <Button key="new-movement" onClick={() => setIsAddModalOpen(true)}>

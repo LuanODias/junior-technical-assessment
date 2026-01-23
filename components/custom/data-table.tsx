@@ -6,6 +6,10 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
@@ -19,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -29,10 +34,6 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   filterComponent?: React.ReactNode;
   searchComponent?: React.ReactNode;
   actionButtons?: React.ReactNode[];
-  // TODO: Implement actual pagination logic
-  // currentPage?: number;
-  // totalPages?: number;
-  // onPageChange?: (page: number) => void;
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
@@ -45,11 +46,25 @@ export function DataTable<TData extends { id: string }, TValue>({
   searchComponent,
   actionButtons,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(), // Enable pagination
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    state: {
+      sorting,
+      columnFilters,
+      globalFilter,
+    },
   });
 
   const generateSkeletonRow = (columnCount: number, key: number) => (
@@ -65,7 +80,13 @@ export function DataTable<TData extends { id: string }, TValue>({
   return (
     <div>
       <div className="flex items-center py-4 gap-2">
-        {searchComponent}
+        {searchComponent && React.isValidElement(searchComponent)
+          ? React.cloneElement(searchComponent as React.ReactElement<any>, {
+              value: globalFilter ?? "",
+              onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+                setGlobalFilter(event.target.value),
+            })
+          : null}
         {filterComponent}
         <div className="ml-auto flex gap-2">
           {actionButtons?.map((button, index) => (
