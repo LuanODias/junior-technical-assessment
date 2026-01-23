@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CategoriasView } from "@/components/views/categorias-view";
 import { EstoqueView } from "@/components/views/estoque-view";
 import { ProdutosView } from "@/components/views/produtos-view";
+import { MovimentacoesView } from "@/components/views/estoque-movimentacoes-view";
 
 export default function Home() {
   return (
@@ -13,10 +14,11 @@ export default function Home() {
       </div>
 
       <Tabs defaultValue="categorias" className="w-full max-w-5xl">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="categorias">Categorias</TabsTrigger>
           <TabsTrigger value="produtos">Produtos</TabsTrigger>
           <TabsTrigger value="estoque">Estoque</TabsTrigger>
+          <TabsTrigger value="movimentacoes">Movimentações</TabsTrigger>
         </TabsList>
         <TabsContent value="categorias">
           <CategoriasView />
@@ -26,6 +28,9 @@ export default function Home() {
         </TabsContent>
         <TabsContent value="estoque">
           <EstoqueView />
+        </TabsContent>
+        <TabsContent value="movimentacoes">
+          <MovimentacoesView />
         </TabsContent>
       </Tabs>
     </main>
