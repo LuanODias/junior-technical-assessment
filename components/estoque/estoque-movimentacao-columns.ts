@@ -3,6 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { EstoqueMovimentacao } from "@/hooks/use-estoque-movimentacoes";
+import { ArrowUpCircle, ArrowDownCircle } from "lucide-react";
+import { createElement } from "react";
 
 export const estoqueMovimentacaoColumns: ColumnDef<EstoqueMovimentacao>[] = [
   {
@@ -29,7 +31,18 @@ export const estoqueMovimentacaoColumns: ColumnDef<EstoqueMovimentacao>[] = [
     filterFn: "arrIncludesSome",
     cell: ({ row }) => {
       const tipo = row.getValue("tipo") as string;
-      return tipo === "entrada" ? "ENTRADA (+)" : "SAÍDA (-)";
+      const isEntrada = tipo === "entrada";
+
+      const Icon = isEntrada ? ArrowUpCircle : ArrowDownCircle;
+      const colorClass = isEntrada ? "text-green-600" : "text-orange-600";
+      const label = isEntrada ? "Entrada" : "Saída";
+
+      return createElement(
+        "div",
+        { className: `flex items-center gap-2 ${colorClass}` },
+        createElement(Icon, { className: "h-4 w-4" }),
+        createElement("span", { className: "font-medium" }, label),
+      );
     },
   },
   {
