@@ -12,7 +12,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -25,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -141,6 +141,9 @@ export function DataTable<TData extends { id: string }, TValue>({
                     </TableHead>
                   );
                 })}
+                {(onEdit || onDelete) && (
+                  <TableHead className="w-[100px]"></TableHead>
+                )}
               </TableRow>
             ))}
           </TableHeader>
@@ -169,18 +172,23 @@ export function DataTable<TData extends { id: string }, TValue>({
                       {onEdit && (
                         <Button
                           variant="ghost"
-                          onClick={() => onEdit(row.original.id)} // Assuming id field exists
-                          className="mr-2"
+                          size="icon" // Deixa o botão quadrado
+                          onClick={() => onEdit(row.original.id)}
+                          className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50 mr-2"
+                          title="Editar"
                         >
-                          Edit
+                          <Pencil className="h-4 w-4" /> {/* Ícone aqui */}
                         </Button>
                       )}
                       {onDelete && (
                         <Button
                           variant="ghost"
-                          onClick={() => onDelete(row.original.id)} // Assuming id field exists
+                          size="icon" // Deixa o botão quadrado
+                          onClick={() => onDelete(row.original.id)}
+                          className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                          title="Excluir"
                         >
-                          Delete
+                          <Trash2 className="h-4 w-4" /> {/* Ícone aqui */}
                         </Button>
                       )}
                     </TableCell>
